@@ -1,0 +1,4 @@
+*~
+OUTPUT.txt
+__pycache__/
+*.py[cod]
