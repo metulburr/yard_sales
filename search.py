@@ -10,7 +10,7 @@ else:
     from urllib.request import Request, urlopen
     
 parser = argparse.ArgumentParser(description='Arguments')
-parser.add_argument('-l','--link', action='store_false', 
+parser.add_argument('-l','--link', action='store_true', 
     help='Remove links from output')
 parser.add_argument('-d','--desc', action='store_true', 
     help='Remove descriptions from output')
@@ -24,16 +24,15 @@ parser.add_argument('-e','--entire', action='store_true',
     help='Remove entire total sales number from output')
 parser.add_argument('-p' , '--page', type=int, default=10,
     help='number of pages to parse')
-parser.add_argument('-o' , '--output', type=str, default='OUTPUT.txt',
+parser.add_argument('-o' , '--output', type=str,
     help='output to filename given')
 args = vars(parser.parse_args())
 
-
-print('Searching for yard sales, please wait')
 orig_stdout = sys.stdout
-f = open(args['output'], 'w')
-sys.stdout = f
-    
+if args['output']:
+    print('Searching for yard sales, please wait')
+    f = open(args['output'], 'w')
+    sys.stdout = f
 
 start_url = 'http://www.yardsalesearch.com/garage-sales.html?week=0&date=0&zip=elmira+ny&r=30&q='
 url = start_url
@@ -69,8 +68,8 @@ while True:
 if not args['entire']:
     print(total_sales)
 sys.stdout = orig_stdout
-print('\n\n\n')
 print('COMPLETE')
-print('Check OUTPUT.txt file to view sales')
-wb.open('OUTPUT.txt')
+if args['output']:
+    print('Check {} file to view sales'.format(args['output']))
+    wb.open('{}'.format(args['output']))
 
