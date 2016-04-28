@@ -78,7 +78,7 @@ while True:
                 output_str += date + '\n'
         if not args['desc']:
             if not ex_flag or in_flag:
-                output_str += description.encode('ascii', 'ignore') + '\n'
+                output_str += description + '\n'
         if not args['sep']:
             if not ex_flag or in_flag:
                 output_str += '-'*50 + '\n'
@@ -93,7 +93,7 @@ if not args['entire']:
 
 if args['output']:
     f = open(args['output'], 'w')
-    f.write(output_str)
+    f.write(output_str.encode('ascii', 'ignore'))
     f.close()
     
     print('Check {} file to view sales'.format(args['output']))
