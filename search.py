@@ -4,6 +4,7 @@ import argparse
 import sys
 from bs4 import BeautifulSoup
 import webbrowser as wb
+import difflib
 if sys.version[0] == '2':
     from urllib2 import Request, urlopen
     import Tkinter
@@ -32,6 +33,8 @@ parser.add_argument('-x' , '--exclude', type=str, nargs='*',
     help='remove entries from list if found in address line')
 parser.add_argument('-i' , '--include', type=str, nargs='*',
     help='include only entries from list if found in address line')
+parser.add_argument('-f' , '--diff', type=str,
+    help='Check current difference from file. This file is a previous output from -o')
 args = vars(parser.parse_args())
 
 print('Searching for yard sales, please wait')
@@ -90,6 +93,15 @@ while True:
         break
 if not args['entire']:
     output_str += str(total_sales) + '\n'
+    
+    
+    
+if args['diff']:
+    old = open(args['diff'])
+    new = output_str
+    for char in difflib.unified_diff(old.readlines(), new.splitlines(True), fromfile=old.name, tofile='current', lineterm='\n'):
+        print(char)
+    old.close()
 
 if args['output']:
     f = open(args['output'], 'w')
@@ -99,5 +111,6 @@ if args['output']:
     print('Check {} file to view sales'.format(args['output']))
     wb.open('{}'.format(args['output']))
 else:
-    print(output_str)
+    if not args['diff']:
+        print(output_str)
 
