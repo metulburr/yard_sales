@@ -112,7 +112,7 @@ if args['diff']:
 
 if args['output']:
     f = open(args['output'], 'w')
-    f.write(output_str.encode('ascii', 'ignore'))
+    f.write(output_str)
     f.close()
     
     print('Check {} file to view sales'.format(args['output']))
