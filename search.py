@@ -11,7 +11,7 @@ if sys.version[0] == '2':
 else:
     from urllib.request import Request, urlopen
     import tkinter
-    
+
 parser = argparse.ArgumentParser(description='Arguments')
 parser.add_argument('-l','--link', action='store_true', 
     help='Remove links from output')
@@ -35,9 +35,11 @@ parser.add_argument('-i' , '--include', type=str, nargs='*',
     help='include only entries from list if found in address line')
 parser.add_argument('-f' , '--diff', type=str,
     help='Check current difference from file. This file is a previous output from -o')
+parser.add_argument('-r' , '--read', type=str,
+    help='read all existing file')
 args = vars(parser.parse_args())
 
-print('Searching for yard sales, please wait')
+print('Searching for yard sales, please wait...')
 
 start_url = 'http://www.yardsalesearch.com/garage-sales.html?week=0&date=0&zip=elmira+ny&r=30&q='
 url = start_url
@@ -46,6 +48,13 @@ total_sales = 0
 output_str = ''
 ex = args['exclude']
 inc = args['include']
+
+if args['read']:
+    f = open(args['read'])
+    content = f.read()
+    print(content)
+    f.close()
+    sys.exit()
 
 while True:
     html = urlopen(url)
@@ -93,9 +102,7 @@ while True:
         break
 if not args['entire']:
     output_str += str(total_sales) + '\n'
-    
-    
-    
+
 if args['diff']:
     old = open(args['diff'])
     new = output_str
