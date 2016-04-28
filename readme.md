@@ -33,13 +33,21 @@ select number of pages to parse
     python search -p 2
 output to filename
 
-    python search -o sales.txt
+    python search.py -o sales.txt
+Will exclude the cities Elmira and Horseheads from output
+
+    python search.py -x Elmira Horseheads 
+List only city Elmira in output
+
+    python search.py -i Elmira
     
 Any combination of arguments can be given to give the desired output. 
     
 
 
-usage: search.py [-h] [-l] [-d] [-t] [-s] [-a] [-e] [-p PAGE] [-o OUTPUT]
+usage: search_2.py [-h] [-l] [-d] [-t] [-s] [-a] [-e] [-p PAGE] [-o OUTPUT]
+                   [-x [EXCLUDE [EXCLUDE ...]]] [-i [INCLUDE [INCLUDE ...]]]
+
 
 Arguments
 
@@ -54,3 +62,9 @@ optional arguments:
   -p PAGE, --page PAGE  number of pages to parse
   -o OUTPUT, --output OUTPUT
                         output to filename given
+  -x [EXCLUDE [EXCLUDE ...]], --exclude [EXCLUDE [EXCLUDE ...]]
+                        remove entries from list if found in address line
+  -i [INCLUDE [INCLUDE ...]], --include [INCLUDE [INCLUDE ...]]
+                        include only entries from list if found in address
+                        line
+
