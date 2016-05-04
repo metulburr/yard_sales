@@ -5,6 +5,7 @@ import sys
 from bs4 import BeautifulSoup
 import webbrowser as wb
 import difflib
+import os
 if sys.version[0] == '2':
     from urllib2 import Request, urlopen
     import Tkinter
@@ -25,7 +26,7 @@ parser.add_argument('-a','--address', action='store_true',
     help='Remove address from output')
 parser.add_argument('-e','--entire', action='store_true', 
     help='Remove entire total sales number from output')
-parser.add_argument('-p' , '--page', type=int, default=5,
+parser.add_argument('-p' , '--page', type=int, default=15,
     help='number of pages to parse')
 parser.add_argument('-o' , '--output', type=str,
     help='output to filename given')
@@ -37,7 +38,14 @@ parser.add_argument('-f' , '--diff', type=str,
     help='Check current difference from file. This file is a previous output from -o')
 parser.add_argument('-r' , '--read', type=str,
     help='read all existing file')
+parser.add_argument('-w','--show', action='store_true', 
+    help='show file after creating')
 args = vars(parser.parse_args())
+
+if args['diff']:
+    if not os.path.exists(args['diff']):
+        print('"{}" file does not exist. Please create one with -o argument'.format(args['diff']))
+        sys.exit()
 
 print('Searching for yard sales, please wait...')
 
@@ -116,7 +124,8 @@ if args['output']:
     f.close()
     
     print('Check {} file to view sales'.format(args['output']))
-    wb.open('{}'.format(args['output']))
+    if args['show']:
+        wb.open('{}'.format(args['output']))
 else:
     if not args['diff']:
         print(output_str)
